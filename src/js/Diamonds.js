@@ -21,7 +21,6 @@ export default class Diamonds
         this.red = {}
         this.red.geometry = new THREE.SphereGeometry(0.1, 10, -30) 
         this.red.material = new THREE.MeshBasicMaterial({
-            wireframe: true,
             color: 0xF43910
         })
         this.red.mesh = new THREE.Mesh(this.red.geometry, this.red.material)
@@ -37,7 +36,6 @@ export default class Diamonds
         this.blue = {}
         this.blue.geometry = new THREE.SphereGeometry(0.1, 10, -30) 
         this.blue.material = new THREE.MeshBasicMaterial({
-            wireframe: true,
             color: 0x3788B6
         })
         this.blue.mesh = new THREE.Mesh(this.blue.geometry, this.blue.material)
@@ -53,7 +51,6 @@ export default class Diamonds
         this.green = {}
         this.green.geometry = new THREE.SphereGeometry(0.1, 10, -30) 
         this.green.material = new THREE.MeshBasicMaterial({
-            wireframe: true,
             color: 0x76AD35
         })
         this.green.mesh = new THREE.Mesh(this.green.geometry, this.green.material)
@@ -69,7 +66,6 @@ export default class Diamonds
         this.white = {}
         this.white.geometry = new THREE.SphereGeometry(0.1, 10, -30) 
         this.white.material = new THREE.MeshBasicMaterial({
-            wireframe: true,
             color: 0xffffff
         })
         this.white.mesh = new THREE.Mesh(this.white.geometry, this.white.material)

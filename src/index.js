@@ -63,6 +63,28 @@ const diamonds = new Diamonds({
 })
 scene.add(diamonds.container)
 
+/**
+ * Cick event
+ */
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+const onMouseMove = (event) =>
+{
+
+	// calculate mouse position in normalized device coordinates
+	// (-1 to +1) for both components
+
+	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+}
+
+window.addEventListener( 'mousemove', onMouseMove, false );
+
+// render()
+
 
 /**
  * Lights
@@ -104,6 +126,9 @@ renderer.shadowMap.enabled = true
 /**
  * Loop
  */
+
+let INTERSECTED = false 
+
 const loop = () =>
 {
     window.requestAnimationFrame(loop)
@@ -113,11 +138,30 @@ const loop = () =>
     camera.position.y = cursor.y * 1
     camera.lookAt(astronaute.container.position)
 
-    // Render
-    renderer.render(scene, camera)
-}
+    
+    // update le rayon de raycaster avec la position de la caméra et de la sourris 
+    raycaster.setFromCamera( mouse, camera );
+    
+	// calcule les objets qui inerfèrent avec le rayon de raycaster
+    const intersects = raycaster.intersectObjects( scene.children, true );
+
+    if ( intersects.length > 0 ) {
+        if ( INTERSECTED != intersects[ 0 ].object ) {
+            if ( INTERSECTED ) INTERSECTED.material.color.setHex( INTERSECTED.currentHex );
+            INTERSECTED = intersects[ 0 ].object;
+            INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
+            INTERSECTED.material.color.setHex( 0xffffff );
+        }
+    } else {
+        if ( INTERSECTED ) INTERSECTED.material.color.setHex( INTERSECTED.currentHex );
+        INTERSECTED = null;
+    }
+        // Render
+        renderer.render(scene, camera)
+    }
 
 loop()
+console.log(scene.children)
 
 
 
