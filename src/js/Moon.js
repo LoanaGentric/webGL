@@ -14,19 +14,21 @@ export default class Moon
         console.log('Coucou Planet')
 
         this.setGlobe()
-        // this.setStars()
+        this.setGlobe2()
         this.setAnimation()
     }
 
     setGlobe()
     {
         this.globe = {}
-        this.globe.geometry = new THREE.SphereBufferGeometry(1, 20, 20)
+        this.globe.geometry = new THREE.SphereBufferGeometry(1, 10, 10)
         this.globe.material = new THREE.MeshStandardMaterial({ 
-            map: this.textureLoader.load(moonTextureSource),
+            color: 0xffffff,
             metalness: 0.3,
             roughness: 0.8,
-            normalMap: this.textureLoader.load(globeNormalSource)
+            normalMap: this.textureLoader.load(globeNormalSource),
+            transparent: true, 
+            opacity: 0.9
         })
         this.globe.mesh = new THREE.Mesh(this.globe.geometry, this.globe.material)
         this.globe.mesh.position.y = -1
@@ -34,6 +36,26 @@ export default class Moon
         this.globe.receiveShadow = true
 
         this.container.add(this.globe.mesh)
+    }
+
+    setGlobe2()
+    {
+        this.secondGlobe = {}
+        this.secondGlobe.geometry = new THREE.SphereBufferGeometry(1.009, 18, 18)
+        this.secondGlobe.material = new THREE.MeshStandardMaterial({ 
+            map: this.textureLoader.load(moonTextureSource),
+            metalness: 0.3,
+            roughness: 0.8,
+            normalMap: this.textureLoader.load(globeNormalSource),
+            transparent: true, 
+            opacity: 0.5
+        })
+        this.secondGlobe.mesh = new THREE.Mesh(this.secondGlobe.geometry, this.secondGlobe.material)
+        this.secondGlobe.mesh.position.y = -1
+
+        this.secondGlobe.receiveShadow = true
+
+        this.container.add(this.secondGlobe.mesh)
     }
 
 
@@ -45,6 +67,7 @@ export default class Moon
 
             //rotation planete
             this.globe.mesh.rotation.z += 0.003
+            this.secondGlobe.mesh.rotation.z += 0.003
         }
 
         loop()

@@ -64,7 +64,34 @@ const diamonds = new Diamonds({
 scene.add(diamonds.container)
 
 /**
- * Cick event
+ * Draw Particles
+ */
+let particles
+const colors = [0xffffff, 0xF3F3F3, 0x3788B6];
+
+function drawParticles() {
+    particles = new THREE.Group();
+    scene.add(particles);
+    const geometry = new THREE.TetrahedronGeometry(3, 0);
+    
+    for (let i = 0; i < 1000; i ++) {
+      const material = new THREE.MeshPhongMaterial({
+        color: colors[Math.floor(Math.random() * colors.length)],
+        shading: THREE.FlatShading
+      });
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.set((Math.random() - 0.5) * 1000,
+                        (Math.random() - 0.5) * 1000,
+                        (Math.random() - 0.5) * 1000);
+      mesh.updateMatrix();
+      mesh.matrixAutoUpdate = false;
+      particles.add(mesh);
+    }
+}
+drawParticles();
+
+/**
+ * Raycaster
  */
 
 const raycaster = new THREE.Raycaster();
@@ -72,13 +99,8 @@ const mouse = new THREE.Vector2();
 
 const onMouseMove = (event) =>
 {
-
-	// calculate mouse position in normalized device coordinates
-	// (-1 to +1) for both components
-
 	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
 	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
 }
 
 window.addEventListener( 'mousemove', onMouseMove, false );
@@ -100,18 +122,18 @@ scene.add(sunLight)
 
 sunLight.castShadow = true
 sunLight.shadow.camera.top = 1.20
-sunLight.shadow.camera.right = 1.20
-sunLight.shadow.camera.bottom = -1.20
-sunLight.shadow.camera.left = -1.20
+sunLight.shadow.camera.right = + 1.20
+sunLight.shadow.camera.bottom = + 2.20
+sunLight.shadow.camera.left = + 2.20
 
 /**
  * Cursor
  */
-const cursor = { x: 0.5, y: 0.5 }
+const cursor = { x: 0.5, y: 0.5}
 window.addEventListener('mousemove', (event) =>
 {
     cursor.x = event.clientX / sizes.width - 0.2
-    cursor.y = event.clientY / sizes.height - 0.2
+    cursor.y = event.clientY / sizes.height + 0.2
 })
 
 /**
@@ -121,13 +143,14 @@ const renderer = new THREE.WebGLRenderer()
 renderer.setSize(sizes.width, sizes.height)
 document.body.appendChild(renderer.domElement)
 renderer.render(scene, camera)
+renderer.setClearColor(0x090414);
 renderer.shadowMap.enabled = true
 
 /**
  * Loop
  */
 
-let INTERSECTED = false 
+let intersected = false 
 
 const loop = () =>
 {
@@ -146,19 +169,25 @@ const loop = () =>
     const intersects = raycaster.intersectObjects( scene.children, true );
 
     if ( intersects.length > 0 ) {
-        if ( INTERSECTED != intersects[ 0 ].object ) {
-            if ( INTERSECTED ) INTERSECTED.material.color.setHex( INTERSECTED.currentHex );
-            INTERSECTED = intersects[ 0 ].object;
-            INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
-            INTERSECTED.material.color.setHex( 0xffffff );
+        if ( intersected != intersects[ 0 ].object ) {
+            if ( intersected ) intersected.material.color.setHex( intersected.currentHex );
+            intersected = intersects[ 0 ].object;
+            intersected.currentHex = intersected.material.color.getHex();
+            intersected.material.color.setHex( 0xffffff );
         }
     } else {
-        if ( INTERSECTED ) INTERSECTED.material.color.setHex( INTERSECTED.currentHex );
-        INTERSECTED = null;
+        if ( intersected ) intersected.material.color.setHex( intersected.currentHex );
+        intersected = null;
     }
-        // Render
-        renderer.render(scene, camera)
-    }
+
+    //Particles
+    particles.rotation.x += 0.0004;
+    particles.rotation.y -= 0.0009;
+
+    // Render
+    renderer.render(scene, camera)
+
+}
 
 loop()
 console.log(scene.children)
