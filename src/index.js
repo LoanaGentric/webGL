@@ -2,6 +2,7 @@ import './css/style.styl'
 
 
 import * as THREE from 'three' 
+// import {MTLLoader, OBJLoader} from 'three-obj-mtl-loader'
 import Moon from './js/Moon.js'
 import Astronaute from './js/Astronaute.js'
 import Diamonds from './js/Diamonds.js'
@@ -64,10 +65,12 @@ const astronaute = new Astronaute({
 })
 scene.add(astronaute.container)
 
+astronaute.container.scale.x += 0.5
+astronaute.container.scale.y += 0.5
+astronaute.container.scale.z += 0.5
+
 astronaute.container.position.y += 0.3
 
-astronaute.container.castShadow = true
-astronaute.container.receiveShadow = true
 
 /**
  * Draw the Diamonds
@@ -176,14 +179,18 @@ sunLight.shadow.camera.right = + 1.20
 sunLight.shadow.camera.bottom = + 2.20
 sunLight.shadow.camera.left = + 2.20
 
+const skyLight = new THREE.HemisphereLight(0xffffff, 0xefefef, 1)
+skyLight.position.x = 0
+scene.add(skyLight)
+
 /**
  * Cursor
  */
 const cursor = { x: 0.5, y: 0.5}
 window.addEventListener('mousemove', (event) =>
 {
-    cursor.x = event.clientX / sizes.width - 0.2
-    cursor.y = event.clientY / sizes.height + 0.2
+    cursor.x = event.clientX / sizes.width - 0.3
+    cursor.y = event.clientY / sizes.height + 0.3
 })
 
 /**
@@ -195,13 +202,6 @@ document.body.appendChild(renderer.domElement)
 renderer.render(scene, camera)
 renderer.setClearColor(0x090414)
 renderer.shadowMap.enabled = true
-
-/**
- * Listnen to click
- */
-
-
-
 
 
 /**
@@ -262,12 +262,19 @@ const loop = () =>
                     redLight.color.setHex(0x000000)
                     setYellowLigth()
                 }
-                else 
+                else if (intersected.currentHex == 7777589)
                 {
                     blueLight.color.setHex(0x000000)
                     redLight.color.setHex(0x000000)
                     yellowLight.color.setHex(0x000000)
                     setGreenLigth()
+                }
+                else
+                {
+                    blueLight.color.setHex(0x000000)
+                    redLight.color.setHex(0x000000)
+                    yellowLight.color.setHex(0x000000)
+                    greenLight.color.setHex(0x000000)
                 }
             }
     

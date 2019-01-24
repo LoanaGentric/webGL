@@ -32,11 +32,6 @@ export default class Diamonds
         this.red.mesh.position.y +=1
         this.red.mesh.position.z -=0.5
         this.container.add(this.red.mesh)
-
-        // this.light = {} 
-        // this.light = new THREE.PointLight( 0xF8855F, 0.9, 100 )
-        // this.light.position.set( 0.6, 0.9, - 0.5 )
-        // this.container.add( this.light )
     }
 
     setBlue()
@@ -50,11 +45,6 @@ export default class Diamonds
         this.blue.mesh.position.y += 0
         this.blue.mesh.position.z -= 0.1
         this.container.add(this.blue.mesh)
-
-        // this.light = {} 
-        // this.light = new THREE.PointLight( 0x3788B6, 0.9, 100 )
-        // this.light.position.set( 0, 6, 0 )
-        // this.container.add( this.light )
     }
 
     setGreen()
@@ -68,11 +58,6 @@ export default class Diamonds
         this.green.mesh.position.y +=0.1
         this.green.mesh.position.z +=0.4
         this.container.add(this.green.mesh)
-
-        // this.light = {} 
-        // this.light = new THREE.PointLight( 0x76AD35, 0.9, 100 )
-        // this.light.position.set( - 0.9, 0.1, 0.4 )
-        // this.container.add( this.light )
     }
 
     setYellow()
@@ -86,11 +71,6 @@ export default class Diamonds
         this.yellow.mesh.position.y += 0.8
         this.yellow.mesh.position.z += 0.1
         this.container.add(this.yellow.mesh)
-
-        // this.light = {} 
-        // this.light = new THREE.PointLight( 0xF9E81C, 0.9, 100 )
-        // this.light.position.set( - 0.6, 0.8, 0.1 )
-        // this.container.add( this.light )
     }
 
     setAnimation()
