@@ -30,7 +30,7 @@ export default class Astronaute
     {
         this.body = {}
         this.body.geometry = new THREE.BoxGeometry(0.1, 0.2, 0.1)
-        this.body.material = new THREE.MeshBasicMaterial({ color: 0xffffff })
+        this.body.material = new THREE.MeshStandardMaterial({ color: 0xffffff })
 
         this.body.castShadow = true
 
@@ -45,7 +45,7 @@ export default class Astronaute
     {
         this.head = {}
         this.head.geometry = new THREE.SphereBufferGeometry(0.07, 0.2, 0.1)
-        this.head.material = new THREE.MeshBasicMaterial({ color: 0xffffff })
+        this.head.material = new THREE.MeshStandardMaterial({ color: 0xffffff })
 
         this.head.mesh = new THREE.Mesh(this.head.geometry, this.head.material)
         
@@ -58,7 +58,7 @@ export default class Astronaute
     {
         this.rightThigh = {}
         this.rightThigh.geometry = new THREE.BoxGeometry(0.1, 0.04, 0.04)
-        this.rightThigh.material = new THREE.MeshBasicMaterial({ color: 0xefefef})
+        this.rightThigh.material = new THREE.MeshStandardMaterial({ color: 0xefefef})
 
         this.rightThigh.mesh = new THREE.Mesh(this.rightThigh.geometry, this.rightThigh.material)
         
@@ -75,7 +75,7 @@ export default class Astronaute
     {
         this.leftThigh = {}
         this.leftThigh.geometry = new THREE.BoxGeometry(0.1, 0.04, 0.04)
-        this.leftThigh.material = new THREE.MeshBasicMaterial({ color: 0xefefef })
+        this.leftThigh.material = new THREE.MeshStandardMaterial({ color: 0xefefef })
 
         this.leftThigh.mesh = new THREE.Mesh(this.leftThigh.geometry, this.leftThigh.material)
 
@@ -91,7 +91,7 @@ export default class Astronaute
     {
         this.rightCalf = {}
         this.rightCalf.geometry = new THREE.BoxGeometry(0.08, 0.03, 0.04)
-        this.rightCalf.material = new THREE.MeshBasicMaterial({ color: 0xefefef })
+        this.rightCalf.material = new THREE.MeshStandardMaterial({ color: 0xefefef })
 
         this.rightCalf.mesh = new THREE.Mesh(this.rightCalf.geometry, this.rightCalf.material)
 
@@ -107,7 +107,7 @@ export default class Astronaute
     {
         this.leftCalf = {}
         this.leftCalf.geometry = new THREE.BoxGeometry(0.08, 0.03, 0.04)
-        this.leftCalf.material = new THREE.MeshBasicMaterial({ color: 0xefefef })
+        this.leftCalf.material = new THREE.MeshStandardMaterial({ color: 0xefefef })
 
         this.leftCalf.mesh = new THREE.Mesh(this.leftCalf.geometry, this.leftCalf.material)
 
@@ -123,7 +123,7 @@ export default class Astronaute
     {
         this.rightUpperArm = {}
         this.rightUpperArm.geometry = new THREE.BoxGeometry(0.1, 0.03, 0.04)
-        this.rightUpperArm.material = new THREE.MeshBasicMaterial({ color: 0xefefef})
+        this.rightUpperArm.material = new THREE.MeshStandardMaterial({ color: 0xefefef})
 
         this.rightUpperArm.mesh = new THREE.Mesh(this.rightUpperArm.geometry, this.rightUpperArm.material)
 
@@ -139,7 +139,7 @@ export default class Astronaute
     {
         this.leftUpperArm = {}
         this.leftUpperArm.geometry = new THREE.BoxGeometry(0.1, 0.03, 0.04)
-        this.leftUpperArm.material = new THREE.MeshBasicMaterial({ color: 0xefefef })
+        this.leftUpperArm.material = new THREE.MeshStandardMaterial({ color: 0xefefef })
 
         this.leftUpperArm.mesh = new THREE.Mesh(this.leftUpperArm.geometry, this.leftUpperArm.material)
 
@@ -155,7 +155,7 @@ export default class Astronaute
     {
         this.rightForearm = {}
         this.rightForearm.geometry = new THREE.BoxGeometry(0.08, 0.03, 0.04)
-        this.rightForearm.material = new THREE.MeshBasicMaterial({ color: 0xefefef})
+        this.rightForearm.material = new THREE.MeshStandardMaterial({ color: 0xefefef})
 
         this.rightForearm.mesh = new THREE.Mesh(this.rightForearm.geometry, this.rightForearm.material)
 
@@ -171,7 +171,7 @@ export default class Astronaute
     {
         this.leftForearm = {}
         this.leftForearm.geometry = new THREE.BoxGeometry(0.08, 0.03, 0.04)
-        this.leftForearm.material = new THREE.MeshBasicMaterial({ color: 0xefefef })
+        this.leftForearm.material = new THREE.MeshStandardMaterial({ color: 0xefefef })
 
         this.leftForearm.mesh = new THREE.Mesh(this.leftForearm.geometry, this.leftForearm.material)
 

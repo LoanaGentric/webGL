@@ -1,7 +1,7 @@
 import './css/style.styl'
 
 
-import * as THREE from 'three'
+import * as THREE from 'three' 
 import Moon from './js/Moon.js'
 import Astronaute from './js/Astronaute.js'
 import Diamonds from './js/Diamonds.js'
@@ -31,14 +31,29 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
 camera.position.z = 1
 scene.add(camera)
 
+/**
+ * Resize function
+ */
+
+const onWindowResize = () => 
+{
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+ 
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
 
 /**
  * Draw the Moon
  */
+
 const moon = new Moon({
     textureLoader: textureLoader
 })
 scene.add(moon.container)
+
+moon.container.receiveShadow = true
 
 /**
  * Draw Astronaute
@@ -63,61 +78,96 @@ const diamonds = new Diamonds({
 })
 scene.add(diamonds.container)
 
+diamonds.container.castShadow = true
+
 /**
  * Draw Particles
  */
-let particles
-const colors = [0xffffff, 0xF3F3F3, 0x3788B6];
 
-function drawParticles() {
-    particles = new THREE.Group();
-    scene.add(particles);
-    const geometry = new THREE.TetrahedronGeometry(3, 0);
+let particles
+const colors = [0xffffff, 0xF3F3F3, 0xFCF8E2]
+
+const drawParticles = () => {
+    particles = new THREE.Group()
+    scene.add(particles)
+    const geometry = new THREE.TetrahedronGeometry(1, 0)
     
-    for (let i = 0; i < 1000; i ++) {
+    for (let i = 0; i < 900; i ++) {
       const material = new THREE.MeshPhongMaterial({
-        color: colors[Math.floor(Math.random() * colors.length)],
-        shading: THREE.FlatShading
-      });
-      const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set((Math.random() - 0.5) * 1000,
-                        (Math.random() - 0.5) * 1000,
-                        (Math.random() - 0.5) * 1000);
-      mesh.updateMatrix();
-      mesh.matrixAutoUpdate = false;
-      particles.add(mesh);
+        color: colors[Math.floor(Math.random() * colors.length)]
+      })
+      const mesh = new THREE.Mesh(geometry, material)
+      mesh.position.set((Math.random() - 0.56) * 250,
+                        (Math.random() - 0.56) * 250,
+                        (Math.random() - 0.56) * 250)
+      mesh.updateMatrix()
+      mesh.matrixAutoUpdate = false
+      particles.add(mesh)
     }
 }
-drawParticles();
+drawParticles()
 
 /**
  * Raycaster
  */
 
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
+const raycaster = new THREE.Raycaster()
+const mouse = new THREE.Vector2()
 
 const onMouseMove = (event) =>
 {
-	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1
+	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1
 }
 
-window.addEventListener( 'mousemove', onMouseMove, false );
+window.addEventListener( 'mousemove', onMouseMove, false )
 
-// render()
+/**
+ * Change ambience
+ */
 
+const blueLight = new THREE.PointLight( 0x3788B6, 0.9, 100 )
+blueLight.position.set( 0, 6, 0 )
+
+const setBlueLigth = () => {
+    blueLight.color.setHex(0x3788B6)
+    scene.add( blueLight )
+}
+
+const redLight = new THREE.PointLight( 0xF8855F, 0.9, 100 )
+redLight.position.set( 0, 6, 0 )
+
+const setRedLigth = () => {
+    redLight.color.setHex(0xF8855F)
+    scene.add( redLight )
+}
+
+const greenLight = new THREE.PointLight( 0x76AD35, 0.9, 100 )
+greenLight.position.set( 0, 6, 0 )
+
+const setGreenLigth = () => {
+    greenLight.color.setHex(0x76AD35)
+    scene.add( greenLight )
+}
+
+const yellowLight = new THREE.PointLight( 0xF9E81C, 0.9, 100 )
+yellowLight.position.set( 0, 6, 0 )
+
+const setYellowLigth = () => {
+    yellowLight.color.setHex(0xF9E81C)
+    scene.add( yellowLight )
+}
 
 /**
  * Lights
  */
-const ambientLight = new THREE.AmbientLight(0x555555)
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.1)
 scene.add(ambientLight)
 
-const sunLight = new THREE.DirectionalLight(0xffffff, 0.6)
-sunLight.position.x = 1
-sunLight.position.y = 1
-sunLight.position.z = 1
+const sunLight = new THREE.DirectionalLight(0xFCF8E2, 0.4)
+sunLight.position.x = 200
+sunLight.position.y = 210
+sunLight.position.z = 200
 scene.add(sunLight)
 
 sunLight.castShadow = true
@@ -143,14 +193,23 @@ const renderer = new THREE.WebGLRenderer()
 renderer.setSize(sizes.width, sizes.height)
 document.body.appendChild(renderer.domElement)
 renderer.render(scene, camera)
-renderer.setClearColor(0x090414);
+renderer.setClearColor(0x090414)
 renderer.shadowMap.enabled = true
+
+/**
+ * Listnen to click
+ */
+
+
+
+
 
 /**
  * Loop
  */
 
 let intersected = false 
+let angle = 0
 
 const loop = () =>
 {
@@ -160,37 +219,92 @@ const loop = () =>
     camera.position.x = cursor.x * 1
     camera.position.y = cursor.y * 1
     camera.lookAt(astronaute.container.position)
+    
+    // Update Raycaster
+    raycaster.setFromCamera( mouse, camera )
 
-    
-    // update le rayon de raycaster avec la position de la caméra et de la sourris 
-    raycaster.setFromCamera( mouse, camera );
-    
-	// calcule les objets qui inerfèrent avec le rayon de raycaster
-    const intersects = raycaster.intersectObjects( scene.children, true );
+	// calcule les objets qui interfèrent avec le rayon de raycaster
+    const intersects = raycaster.intersectObjects( scene.children, true )
 
     if ( intersects.length > 0 ) {
-        if ( intersected != intersects[ 0 ].object ) {
-            if ( intersected ) intersected.material.color.setHex( intersected.currentHex );
-            intersected = intersects[ 0 ].object;
-            intersected.currentHex = intersected.material.color.getHex();
-            intersected.material.color.setHex( 0xffffff );
+        if ( intersected != intersects[ 0 ].object ) 
+        {
+            if ( intersected ) 
+            {
+                intersected.material.color.setHex( intersected.currentHex )
+            }
+            intersected = intersects[ 0 ].object
+            intersected.currentHex = intersected.material.color.getHex()
+            intersected.material.color.setHex( 0xffffff )
+            console.log(intersected)
+
+            const onDocumentMouseDown = (event) => 
+            {
+                event.preventDefault()
+                if ( intersected.currentHex == 16005392 )
+                {
+                    blueLight.color.setHex(0x000000)
+                    greenLight.color.setHex(0x000000)
+                    yellowLight.color.setHex(0x000000)
+                    setRedLigth()
+                }
+                else if ( intersected.currentHex == 3639478 )
+                {
+                    redLight.color.setHex(0x000000)
+                    greenLight.color.setHex(0x000000)
+                    yellowLight.color.setHex(0x000000)
+                    setBlueLigth()
+                }
+                else if ( intersected.currentHex == 16377884 )
+                {
+                    blueLight.color.setHex(0x000000)
+                    greenLight.color.setHex(0x000000)
+                    redLight.color.setHex(0x000000)
+                    setYellowLigth()
+                }
+                else 
+                {
+                    blueLight.color.setHex(0x000000)
+                    redLight.color.setHex(0x000000)
+                    yellowLight.color.setHex(0x000000)
+                    setGreenLigth()
+                }
+            }
+    
+            document.addEventListener('mousedown', onDocumentMouseDown, false)
         }
-    } else {
-        if ( intersected ) intersected.material.color.setHex( intersected.currentHex );
-        intersected = null;
+    } 
+    else 
+    {
+        if ( intersected ) intersected.material.color.setHex( intersected.currentHex )
+        intersected = null
     }
 
     //Particles
-    particles.rotation.x += 0.0004;
-    particles.rotation.y -= 0.0009;
+    particles.rotation.x += 0.0004
+    particles.rotation.y -= 0.0009
+
+    //Move light
+
+    angle+=0.009
+
+    sunLight.position.x = 10 + 150 * Math.sin(angle)
+    sunLight.position.z = 10 + 150 * Math.cos(angle)
+    sunLight.position.y = 10 + 150 * Math.cos(angle)
 
     // Render
     renderer.render(scene, camera)
+    // console.log('intersected', intersected)
+    // console.log('blue diamond', intersectsBlueDiamond)
+
+    //Resize
+    onWindowResize()
 
 }
 
 loop()
-console.log(scene.children)
+
+
 
 
 
