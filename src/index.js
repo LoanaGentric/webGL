@@ -1,11 +1,12 @@
 import './css/style.styl'
 
-
 import * as THREE from 'three' 
-// import {MTLLoader, OBJLoader} from 'three-obj-mtl-loader'
+
+
 import Moon from './js/Moon.js'
 import Astronaute from './js/Astronaute.js'
 import Diamonds from './js/Diamonds.js'
+
 
 /**
  * Textures
@@ -31,6 +32,7 @@ sizes.height = window.innerHeight
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
 camera.position.z = 1
 scene.add(camera)
+
 
 /**
  * Resize function
@@ -69,7 +71,7 @@ astronaute.container.scale.x += 0.5
 astronaute.container.scale.y += 0.5
 astronaute.container.scale.z += 0.5
 
-astronaute.container.position.y += 0.3
+astronaute.container.position.y = 0.1
 
 
 /**
@@ -88,17 +90,14 @@ diamonds.container.castShadow = true
  */
 
 let particles
-const colors = [0xffffff, 0xF3F3F3, 0xFCF8E2]
 
 const drawParticles = () => {
     particles = new THREE.Group()
     scene.add(particles)
     const geometry = new THREE.TetrahedronGeometry(1, 0)
+    const material = new THREE.MeshStandardMaterial({color: 0xffffff})
     
     for (let i = 0; i < 900; i ++) {
-      const material = new THREE.MeshPhongMaterial({
-        color: colors[Math.floor(Math.random() * colors.length)]
-      })
       const mesh = new THREE.Mesh(geometry, material)
       mesh.position.set((Math.random() - 0.56) * 250,
                         (Math.random() - 0.56) * 250,
@@ -129,7 +128,7 @@ window.addEventListener( 'mousemove', onMouseMove, false )
  * Change ambience
  */
 
-const blueLight = new THREE.PointLight( 0x3788B6, 0.9, 100 )
+const blueLight = new THREE.PointLight( 0x3788B6, 1.9, 100 )
 blueLight.position.set( 0, 6, 0 )
 
 const setBlueLigth = () => {
@@ -137,7 +136,7 @@ const setBlueLigth = () => {
     scene.add( blueLight )
 }
 
-const redLight = new THREE.PointLight( 0xF8855F, 0.9, 100 )
+const redLight = new THREE.PointLight( 0xF8855F, 1.9, 100 )
 redLight.position.set( 0, 6, 0 )
 
 const setRedLigth = () => {
@@ -145,7 +144,7 @@ const setRedLigth = () => {
     scene.add( redLight )
 }
 
-const greenLight = new THREE.PointLight( 0x76AD35, 0.9, 100 )
+const greenLight = new THREE.PointLight( 0x76AD35, 1.9, 100 )
 greenLight.position.set( 0, 6, 0 )
 
 const setGreenLigth = () => {
@@ -153,7 +152,7 @@ const setGreenLigth = () => {
     scene.add( greenLight )
 }
 
-const yellowLight = new THREE.PointLight( 0xF9E81C, 0.9, 100 )
+const yellowLight = new THREE.PointLight( 0xF9E81C, 1.9, 100 )
 yellowLight.position.set( 0, 6, 0 )
 
 const setYellowLigth = () => {
@@ -184,6 +183,27 @@ skyLight.position.x = 0
 scene.add(skyLight)
 
 /**
+ * Music
+ */
+
+// create an AudioListener and add it to the camera
+var listener = new THREE.AudioListener();
+camera.add( listener );
+
+// create a global audio source
+var sound = new THREE.Audio( listener );
+
+// load a sound and set it as the Audio object's buffer
+var audioLoader = new THREE.AudioLoader();
+audioLoader.load( '/audio/spacetheme.mp3', function( buffer ) {
+	sound.setBuffer( buffer );
+	sound.setLoop( true );
+	sound.setVolume( 0.5 );
+	sound.play();
+});
+
+
+/**
  * Cursor
  */
 const cursor = { x: 0.5, y: 0.5}
@@ -202,7 +222,6 @@ document.body.appendChild(renderer.domElement)
 renderer.render(scene, camera)
 renderer.setClearColor(0x090414)
 renderer.shadowMap.enabled = true
-
 
 /**
  * Loop
@@ -236,47 +255,7 @@ const loop = () =>
             intersected = intersects[ 0 ].object
             intersected.currentHex = intersected.material.color.getHex()
             intersected.material.color.setHex( 0xffffff )
-            console.log(intersected)
 
-            const onDocumentMouseDown = (event) => 
-            {
-                event.preventDefault()
-                if ( intersected.currentHex == 16005392 )
-                {
-                    blueLight.color.setHex(0x000000)
-                    greenLight.color.setHex(0x000000)
-                    yellowLight.color.setHex(0x000000)
-                    setRedLigth()
-                }
-                else if ( intersected.currentHex == 3639478 )
-                {
-                    redLight.color.setHex(0x000000)
-                    greenLight.color.setHex(0x000000)
-                    yellowLight.color.setHex(0x000000)
-                    setBlueLigth()
-                }
-                else if ( intersected.currentHex == 16377884 )
-                {
-                    blueLight.color.setHex(0x000000)
-                    greenLight.color.setHex(0x000000)
-                    redLight.color.setHex(0x000000)
-                    setYellowLigth()
-                }
-                else if (intersected.currentHex == 7777589)
-                {
-                    blueLight.color.setHex(0x000000)
-                    redLight.color.setHex(0x000000)
-                    yellowLight.color.setHex(0x000000)
-                    setGreenLigth()
-                }
-                else
-                {
-                    blueLight.color.setHex(0x000000)
-                    redLight.color.setHex(0x000000)
-                    yellowLight.color.setHex(0x000000)
-                    greenLight.color.setHex(0x000000)
-                }
-            }
     
             document.addEventListener('mousedown', onDocumentMouseDown, false)
         }
@@ -301,8 +280,6 @@ const loop = () =>
 
     // Render
     renderer.render(scene, camera)
-    // console.log('intersected', intersected)
-    // console.log('blue diamond', intersectsBlueDiamond)
 
     //Resize
     onWindowResize()
@@ -311,8 +288,54 @@ const loop = () =>
 
 loop()
 
-
-
+const onDocumentMouseDown = (event) => 
+{
+    event.preventDefault()
+    //click on the red diamond
+    if ( intersected == diamonds.red.mesh )
+    {
+        //change light color
+        blueLight.color.setHex(0x000000)
+        greenLight.color.setHex(0x000000)
+        yellowLight.color.setHex(0x000000)
+        setRedLigth()
+    }
+    //click on the blue diamond
+    else if ( intersected == diamonds.blue.mesh )
+    {
+        //change light color
+        redLight.color.setHex(0x000000)
+        greenLight.color.setHex(0x000000)
+        yellowLight.color.setHex(0x000000)
+        setBlueLigth()
+    }
+    //click on the yellow diamond
+    else if ( intersected == diamonds.yellow.mesh )
+    {
+        //change light color
+        blueLight.color.setHex(0x000000)
+        greenLight.color.setHex(0x000000)
+        redLight.color.setHex(0x000000)
+        setYellowLigth()
+    }
+    //click on the green diamond
+    else if (intersected == diamonds.green.mesh)
+    {
+        //change light color
+        blueLight.color.setHex(0x000000)
+        redLight.color.setHex(0x000000)
+        yellowLight.color.setHex(0x000000)
+        setGreenLigth()
+    }
+    else
+    {
+        //change light color
+        blueLight.color.setHex(0x000000)
+        redLight.color.setHex(0x000000)
+        yellowLight.color.setHex(0x000000)
+        greenLight.color.setHex(0x000000)
+    }
+}
 
 
 

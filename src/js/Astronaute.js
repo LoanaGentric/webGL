@@ -14,10 +14,10 @@ export default class Astronaute
         this.container = new THREE.Object3D()
         console.log('Coucou Astronaute')
 
-        this.setBody()
+        this.setAstronaut()
     }
 
-    setBody()
+    setAstronaut()
     {
         this.mtlLoader = new MTLLoader()
         this.objLoader = new OBJLoader()
@@ -33,6 +33,39 @@ export default class Astronaute
                 object.position.x = 0
                 object.position.z =  0
                 this.container.add(object)
+
+                let up = true
+
+                const loop = () =>
+                {
+                    window.requestAnimationFrame(loop)
+
+                    //rotation diamonds
+
+                    object.rotation.y += 0.001
+
+                    //floating effect
+
+                    if (up == true)
+                    {
+                        object.position.y +=0.0003
+                        if (object.position.y > - 0.01) {
+                            up = false
+                        }
+                    }
+                    else 
+                    {
+                        object.position.y -=0.00025
+                        if (object.position.y < - 0.03)
+                        {
+                            up = true
+                        }
+                    }
+
+            
+                }
+
+                loop()
             })
         })
     }
