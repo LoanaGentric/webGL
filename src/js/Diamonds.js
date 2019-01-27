@@ -5,7 +5,6 @@ export default class Diamonds
     constructor(_options)
     {
         this.container = new THREE.Object3D()
-        console.log('Coucou Diamands')
 
         this.setRed()
         this.setBlue()

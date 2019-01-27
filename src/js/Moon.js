@@ -11,7 +11,6 @@ export default class Moon
         console.log(this.textureLoader)
 
         this.container = new THREE.Object3D()
-        console.log('Coucou Planet')
 
         this.setGlobe()
         this.setGlobe2()

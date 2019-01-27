@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 import {MTLLoader, OBJLoader} from 'three-obj-mtl-loader'
 
-import astronautObject from '../assets/Astronaut.obj'
-import astronautMaterial from '../assets/Astronaut.mtl'
+import astronautObject from '../images/assets/Astronaut.obj'
+import astronautMaterial from '../images/assets/Astronaut.mtl'
 
 export default class Astronaute
 {
@@ -12,7 +12,6 @@ export default class Astronaute
         console.log(this.textureLoader)
 
         this.container = new THREE.Object3D()
-        console.log('Coucou Astronaute')
 
         this.setAstronaut()
     }

@@ -248,7 +248,7 @@ let playState = false
 
 // load a sound and set it as the Audio object's buffer
 const audioLoader = new THREE.AudioLoader()
-audioLoader.load( '/audio/spacetheme.mp3', function( buffer ) {
+audioLoader.load( '/spacetheme.mp3', function( buffer ) {
 	sound.setBuffer( buffer )
 	sound.setLoop( true )
 	sound.setVolume( 0.5 )
@@ -278,7 +278,7 @@ window.addEventListener('keydown', (_event) =>
 const clickLightOn = new THREE.Audio( listener )
 
 
-audioLoader.load( '/audio/light_on.mp3', function( buffer ) {
+audioLoader.load( 'light_on.mp3', function( buffer ) {
 	clickLightOn.setBuffer( buffer )
 	clickLightOn.setLoop( true )
     clickLightOn.setVolume( 0.2 )
@@ -288,7 +288,7 @@ audioLoader.load( '/audio/light_on.mp3', function( buffer ) {
 const clickLightOff = new THREE.Audio( listener )
 
 
-audioLoader.load( '/audio/light_off.mp3', function( buffer ) {
+audioLoader.load( 'light_off.mp3', function( buffer ) {
 	clickLightOff.setBuffer( buffer )
 	clickLightOff.setLoop( true )
     clickLightOff.setVolume( 0.2 )
@@ -383,7 +383,7 @@ loop()
 
 const onDocumentMouseDown = (event) => 
 {
-    console.log(intersected)
+
 
     event.preventDefault()
 
@@ -467,7 +467,6 @@ const onDocumentMouseDown = (event) =>
     //click on the astronaute to switch off all lights
     else if (intersected.currentHex == 8355711 )
     {
-        console.log('ok')
         //change light color
         blueLight.color.setHex(0x000000)
         redLight.color.setHex(0x000000)
@@ -479,7 +478,7 @@ const onDocumentMouseDown = (event) =>
     }
     else
     {
-        console.log('rien')
+        intersected = null
     }
 }
 

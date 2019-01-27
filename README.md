@@ -14,7 +14,9 @@ Astronaut : If you click on the astronaut it will shut down all the lights if yo
 
 Sounds : Clicking on a diamond to turn on the light make a sound, which is different when you turn off this one.
 
+##Disclamer
 
+Dist file is not complete. Textures, audio and Jacob couldn't be built :( . Sorry but to seen the full experience you will have to open this project with your server.
 
 ## Ressources
 - Web GL

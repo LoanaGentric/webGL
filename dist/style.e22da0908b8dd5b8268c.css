@@ -1,0 +1,53 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+h1 {
+  position: absolute;
+  top: 40px;
+  left: 50px;
+  color: #fff;
+  z-index: 100;
+  font-family: 'Righteous', cursive;
+}
+h3 {
+  position: absolute;
+  top: 120px;
+  left: 50px;
+  color: #fff;
+  z-index: 100;
+  font-family: 'Montserrat', sans-serif;
+}
+h4 {
+  position: absolute;
+  top: 150px;
+  left: 50px;
+  color: #fff;
+  z-index: 100;
+  font-family: 'Montserrat', sans-serif;
+}
+#world {
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+
+/*# sourceMappingURL=style.e22da0908b8dd5b8268c.css.map*/
