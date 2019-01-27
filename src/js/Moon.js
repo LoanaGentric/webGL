@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 
 import moonTextureSource from '../images/textures/moon.jpg'
-import globeNormalSource from '../images/textures/planet/globe/normal.jpg'
+
 
 export default class Moon
 {
@@ -26,9 +26,7 @@ export default class Moon
             color: 0xffffff,
             metalness: 0.3,
             roughness: 0.8,
-            normalMap: this.textureLoader.load(globeNormalSource),
-            transparent: true, 
-            opacity: 0.9
+            transparent: true
         })
         this.globe.mesh = new THREE.Mesh(this.globe.geometry, this.globe.material)
         this.globe.mesh.position.y = -1
@@ -46,7 +44,6 @@ export default class Moon
             map: this.textureLoader.load(moonTextureSource),
             metalness: 0.3,
             roughness: 0.8,
-            normalMap: this.textureLoader.load(globeNormalSource),
             transparent: true, 
             opacity: 0.5
         })

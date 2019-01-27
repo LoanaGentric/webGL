@@ -34,6 +34,7 @@ camera.position.z = 1
 scene.add(camera)
 
 
+
 /**
  * Resize function
  */
@@ -125,48 +126,99 @@ const onMouseMove = (event) =>
 window.addEventListener( 'mousemove', onMouseMove, false )
 
 /**
- * Change ambience
+ * Diamonds lights
  */
 
-const blueLight = new THREE.PointLight( 0x3788B6, 1.9, 100 )
-blueLight.position.set( 0, 6, 0 )
+//create blue light
+const blueLight = new THREE.PointLight( 0x3788B6, 1, 100 )
+blueLight.position.set( 6, 6, -2 )
 
+//says if blue light is on
+let blueState = true
+
+//function to turn on the blue light
 const setBlueLigth = () => {
     blueLight.color.setHex(0x3788B6)
     scene.add( blueLight )
+    blueState = true
 }
 
-const redLight = new THREE.PointLight( 0xF8855F, 1.9, 100 )
-redLight.position.set( 0, 6, 0 )
+//function to turn off the blue light
+const offBlueLigth = () => {
+    scene.remove( blueLight )
+    blueState = false
+}
 
+setBlueLigth()
+
+//create red light
+const redLight = new THREE.PointLight( 0xDF2F0E, 1, 100 )
+redLight.position.set( 6, 6, 2 )
+
+//says if red light is on
+let redState = false
+
+//function to turn on the red light
 const setRedLigth = () => {
     redLight.color.setHex(0xF8855F)
     scene.add( redLight )
+    redState = true
 }
 
-const greenLight = new THREE.PointLight( 0x76AD35, 1.9, 100 )
-greenLight.position.set( 0, 6, 0 )
+//function to turn off the red light
+const offRedLigth = () => {
+    scene.remove( redLight )
+    redState = false
+}
 
+//create green light
+const greenLight = new THREE.PointLight( 0x76AD35, 1, 100 )
+greenLight.position.set( -6, 6, -2 )
+
+//says if green light is on
+let greenState = false
+
+//function to turn on the green light
 const setGreenLigth = () => {
     greenLight.color.setHex(0x76AD35)
     scene.add( greenLight )
+    greenState = true
 }
 
-const yellowLight = new THREE.PointLight( 0xF9E81C, 1.9, 100 )
-yellowLight.position.set( 0, 6, 0 )
+//function to turn off the green light
+const offGreenLigth = () => {
+    scene.remove( greenLight )
+    greenState = false
+}
 
+//create yellow light
+const yellowLight = new THREE.PointLight( 0xF9E81C, 1, 100 )
+yellowLight.position.set( -6, 6, 2 )
+
+//says if yellow light is on
+let yellowState = false
+
+//function to turn on the yellow light
 const setYellowLigth = () => {
     yellowLight.color.setHex(0xF9E81C)
     scene.add( yellowLight )
+    yellowState = true
 }
+
+//function to turn off the yellow light
+const offYellowLigth = () => {
+    scene.remove( yellowLight )
+    yellowState = false
+}
+
 
 /**
  * Lights
  */
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.1)
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.05)
 scene.add(ambientLight)
 
-const sunLight = new THREE.DirectionalLight(0xFCF8E2, 0.4)
+const sunLight = new THREE.DirectionalLight(0xFCF8E2, 0.05)
 sunLight.position.x = 200
 sunLight.position.y = 210
 sunLight.position.z = 200
@@ -178,7 +230,7 @@ sunLight.shadow.camera.right = + 1.20
 sunLight.shadow.camera.bottom = + 2.20
 sunLight.shadow.camera.left = + 2.20
 
-const skyLight = new THREE.HemisphereLight(0xffffff, 0xefefef, 1)
+const skyLight = new THREE.HemisphereLight(0xffffff, 0xefefef, 0.4)
 skyLight.position.x = 0
 scene.add(skyLight)
 
@@ -187,21 +239,61 @@ scene.add(skyLight)
  */
 
 // create an AudioListener and add it to the camera
-var listener = new THREE.AudioListener();
-camera.add( listener );
+const listener = new THREE.AudioListener()
+camera.add( listener )
 
 // create a global audio source
-var sound = new THREE.Audio( listener );
+const sound = new THREE.Audio( listener )
+let playState = false
 
 // load a sound and set it as the Audio object's buffer
-var audioLoader = new THREE.AudioLoader();
+const audioLoader = new THREE.AudioLoader()
 audioLoader.load( '/audio/spacetheme.mp3', function( buffer ) {
-	sound.setBuffer( buffer );
-	sound.setLoop( true );
-	sound.setVolume( 0.5 );
-	sound.play();
-});
+	sound.setBuffer( buffer )
+	sound.setLoop( true )
+	sound.setVolume( 0.5 )
+})
 
+window.addEventListener('keydown', (_event) => 
+{
+    const keyName = _event.keyCode
+
+    if(keyName == 32 && playState == false)
+    {
+        sound.play()
+        playState = true
+    } 
+
+    else if(keyName == 32 && playState)
+    {
+        sound.pause()
+        playState = false
+    }
+})
+
+/**
+ * Click sounds
+ */
+
+const clickLightOn = new THREE.Audio( listener )
+
+
+audioLoader.load( '/audio/light_on.mp3', function( buffer ) {
+	clickLightOn.setBuffer( buffer )
+	clickLightOn.setLoop( true )
+    clickLightOn.setVolume( 0.2 )
+    clickLightOn.loop = false
+})
+
+const clickLightOff = new THREE.Audio( listener )
+
+
+audioLoader.load( '/audio/light_off.mp3', function( buffer ) {
+	clickLightOff.setBuffer( buffer )
+	clickLightOff.setLoop( true )
+    clickLightOff.setVolume( 0.2 )
+    clickLightOff.loop = false
+})
 
 /**
  * Cursor
@@ -222,6 +314,7 @@ document.body.appendChild(renderer.domElement)
 renderer.render(scene, camera)
 renderer.setClearColor(0x090414)
 renderer.shadowMap.enabled = true
+
 
 /**
  * Loop
@@ -256,7 +349,7 @@ const loop = () =>
             intersected.currentHex = intersected.material.color.getHex()
             intersected.material.color.setHex( 0xffffff )
 
-    
+
             document.addEventListener('mousedown', onDocumentMouseDown, false)
         }
     } 
@@ -290,50 +383,103 @@ loop()
 
 const onDocumentMouseDown = (event) => 
 {
+    console.log(intersected)
+
     event.preventDefault()
+
     //click on the red diamond
-    if ( intersected == diamonds.red.mesh )
+    if ( intersected == diamonds.blue.mesh )
     {
-        //change light color
-        blueLight.color.setHex(0x000000)
-        greenLight.color.setHex(0x000000)
-        yellowLight.color.setHex(0x000000)
-        setRedLigth()
+        if (blueState == false)
+        {
+           //set light
+            setBlueLigth() 
+
+            //click sound
+            clickLightOn.play()
+        }
+        else 
+        {
+            offBlueLigth()
+
+            //click sound
+            clickLightOff.play()
+        }
     }
+
     //click on the blue diamond
-    else if ( intersected == diamonds.blue.mesh )
+    else if ( intersected == diamonds.red.mesh )
     {
-        //change light color
-        redLight.color.setHex(0x000000)
-        greenLight.color.setHex(0x000000)
-        yellowLight.color.setHex(0x000000)
-        setBlueLigth()
+        if (redState == false)
+        {
+           //set light
+            setRedLigth() 
+
+            //click sound
+            clickLightOn.play()
+        }
+        else 
+        {
+            offRedLigth()
+
+            //click sound
+            clickLightOff.play()
+        }
     }
     //click on the yellow diamond
     else if ( intersected == diamonds.yellow.mesh )
     {
-        //change light color
-        blueLight.color.setHex(0x000000)
-        greenLight.color.setHex(0x000000)
-        redLight.color.setHex(0x000000)
-        setYellowLigth()
+        if (yellowState == false)
+        {
+           //set light
+            setYellowLigth() 
+
+            //click sound
+            clickLightOn.play()
+        }
+        else 
+        {
+            offYellowLigth()
+
+            //click sound
+            clickLightOff.play()
+        }
     }
     //click on the green diamond
-    else if (intersected == diamonds.green.mesh)
+    else if ( intersected == diamonds.green.mesh )
     {
+        if (greenState == false)
+        {
+           //set light
+            setGreenLigth() 
+
+            //click sound
+            clickLightOn.play()
+        }
+        else 
+        {
+            offGreenLigth()
+
+            //click sound
+            clickLightOff.play()
+        }
+    }
+    //click on the astronaute to switch off all lights
+    else if (intersected.currentHex == 8355711 )
+    {
+        console.log('ok')
         //change light color
         blueLight.color.setHex(0x000000)
         redLight.color.setHex(0x000000)
         yellowLight.color.setHex(0x000000)
-        setGreenLigth()
+        greenLight.color.setHex(0x000000)
+
+        //click sound
+        clickLightOff.play()
     }
     else
     {
-        //change light color
-        blueLight.color.setHex(0x000000)
-        redLight.color.setHex(0x000000)
-        yellowLight.color.setHex(0x000000)
-        greenLight.color.setHex(0x000000)
+        console.log('rien')
     }
 }
 
